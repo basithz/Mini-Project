@@ -1,0 +1,72 @@
+import os 
+import shutil
+from sklearn.model_selection import train_test_split
+
+# Define the dataset path
+dataset_dir = 'fruitdataset2/fruitdataset'
+categories = ['fresh', 'rotten']  # Subfolder names
+
+# Create separate directories for training and testing datasets
+train_dir = 'basifruit/train'
+test_dir = 'basifruit/test'
+
+# Create folders for train and test sets for both categories
+for category in categories:
+    os.makedirs(os.path.join(train_dir, category), exist_ok=True)
+    os.makedirs(os.path.join(test_dir, category), exist_ok=True)
+
+# Function to split and copy data
+def split_data(category):
+    category_path = os.path.join(dataset_dir, category)
+    images = os.listdir(category_path)
+    
+    # Splitting the dataset into 80% train and 20% test
+    train_images, test_images = train_test_split(images, test_size=0.2, random_state=42)
+    
+    # Copy images to train folder
+    for image in train_images:
+        src = os.path.join(category_path, image)
+        dst = os.path.join(train_dir, category, image)
+        shutil.copyfile(src, dst)
+    
+    # Copy images to test folder
+    for image in test_images:
+        src = os.path.join(category_path, image)
+        dst = os.path.join(test_dir, category, image)
+        shutil.copyfile(src, dst)
+
+# Split data for both categories
+for category in categories:
+    split_data(category)
+
+print("Dataset successfully split into training and testing sets.")                                                           from PIL import Image
+import os
+
+# Preprocess function to resize and convert images
+def preprocess_images(data_dir):
+    for category in ['fresh', 'rotten']:  # Process both categories
+        category_path = os.path.join(data_dir, category)
+        images = os.listdir(category_path)
+        
+        for image_name in images:
+            image_path = os.path.join(category_path, image_name)
+            try:
+                with Image.open(image_path) as img:
+                    # Validate image
+                    img.verify()  # Check if the image is not broken
+                    img = Image.open(image_path)  # Reopen image after verify
+                    img = img.convert('RGB')  # Convert to RGB
+                    img = img.resize(target_size)  # Resize image
+                    img.save(image_path, target_format)  # Save in target format
+                    print(f"Processed {image_path}")
+            except (IOError, SyntaxError, OSError) as e:
+                print(f"Error processing {image_path}: {e}")
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# Custom function to handle broken images in generator
+def create_safe_generator(generator):
+    while True:
+        try:
+            yield next(generator)
+        except (OSError, IOError) as e:
+            print(f"Skipping invalid image due to: {e}")
