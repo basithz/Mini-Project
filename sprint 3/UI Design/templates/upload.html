@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Upload Image</title>
+</head>
+<body>
+    <div class="stars"></div> <!-- Background stars -->
+    <h1>Fresh/Rotten Fruit Detectorr</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file-upload">Choose an image:</label>
+        <input type="file" name="file" accept="image/*" required id="file-upload">
+        <button type="submit">Upload and Predict</button>
+    </form>
+    <script>
+        // Create multiple star elements
+        const starsContainer = document.querySelector('.stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            // Random position for each star
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDuration = Math.random() * 2 + 1 + 's'; // Randomize duration
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
