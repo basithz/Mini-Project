@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Prediction Result</title>
+</head>
+<body>
+    <div class="stars"></div> <!-- Background stars -->
+    <h1>Prediction Result</h1>
+    <img src="{{ url_for('static', filename=image_file) }}" alt="Uploaded Image">
+    <h2>Predicted: {{ result }}</h2>
+    <a href="/">Upload another image</a>
+    <script>
+        // Create multiple star elements
+        const starsContainer = document.querySelector('.stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            // Random position for each star
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDuration = Math.random() * 2 + 1 + 's'; // Randomize duration
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
